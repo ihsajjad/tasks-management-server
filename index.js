@@ -31,6 +31,12 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/new-task", async (req, res) => {
+      const { newTask } = req.body;
+      const result = await tasksCollection.insertOne(newTask);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
