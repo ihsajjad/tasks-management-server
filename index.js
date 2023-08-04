@@ -26,17 +26,20 @@ async function run() {
     await client.connect();
     const tasksCollection = client.db("tasks-management").collection("tasks");
 
+    // Get API to get all tasks
     app.get("/tasks", async (req, res) => {
       const result = await tasksCollection.find().toArray();
       res.send(result);
     });
 
+    // Post API to upload a new Task
     app.post("/new-task", async (req, res) => {
       const { newTask } = req.body;
       const result = await tasksCollection.insertOne(newTask);
       res.send(result);
     });
 
+    // Patch API to update particular property. In this case status
     app.patch("/update-status/:id", async (req, res) => {
       const id = req.params.id;
       const { updatedStatus } = req.body;
@@ -51,6 +54,7 @@ async function run() {
       res.send(result);
     });
 
+    // Delete API to delete single task
     app.delete("/delete/:id", async (req, res) => {
       const id = req.params?.id;
       const query = { _id: new ObjectId(id) };
